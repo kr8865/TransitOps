@@ -44,6 +44,32 @@ app.use((err, req, res, next) => {
 
 // Database Seeding Function
 
+const seedDatabase = async () => {
+  // Only seed when explicitly requested via env var to avoid accidental data changes
+  if (process.env.SEED_DB !== 'true') {
+    console.log('SEED_DB not enabled; skipping database seeding.');
+    return;
+  }
+
+  try {
+    console.log('Seeding database...');
+    // Minimal seeding example: create an admin user if none exists
+    const adminExists = await User.findOne({ email: process.env.ADMIN_EMAIL || 'admin@transitops.local' });
+    if (!adminExists) {
+      const admin = new User({
+        name: 'Admin',
+        email: process.env.ADMIN_EMAIL || 'admin@transitops.local',
+        password: process.env.ADMIN_PASSWORD || 'password',
+        role: 'Admin'
+      });
+      await admin.save();
+      console.log('Created admin user');
+    }
+  } catch (err) {
+    console.error('Error during seeding:', err.message || err);
+  }
+};
+
 
 // Start Server
 const PORT = process.env.PORT || 5001;

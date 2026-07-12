@@ -1,12 +1,4 @@
 const express = require('express');
-<<<<<<< HEAD
-const router = express.Router();
-const Trip = require('../models/Trip');
-const { protect } = require('../middleware/authMiddleware');
-
-// GET /api/trips - return all trips populated with vehicle and driver
-router.get('/', protect, async (req, res, next) => {
-=======
 const Trip = require('../models/Trip');
 const Vehicle = require('../models/Vehicle');
 const Driver = require('../models/Driver');
@@ -40,18 +32,11 @@ const calculateETA = (distance) => {
 // @desc    Get all trips
 // @access  Private
 router.get('/', protect, async (req, res) => {
->>>>>>> 3d337fa323697b8d8db7adbfd894a736e2dd1cc3
   try {
     const trips = await Trip.find()
       .populate('vehicle')
       .populate('driver')
       .sort({ createdAt: -1 });
-<<<<<<< HEAD
-
-    res.json(trips);
-  } catch (err) {
-    next(err);
-=======
     res.json(trips);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -326,7 +311,6 @@ router.put('/:id/cancel', protect, authorize('Dispatcher'), async (req, res) => 
     res.json(updatedTrip);
   } catch (error) {
     res.status(400).json({ message: error.message });
->>>>>>> 3d337fa323697b8d8db7adbfd894a736e2dd1cc3
   }
 });
 
