@@ -9,7 +9,7 @@ const router = express.Router();
 // @access  Private
 router.get('/', protect, async (req, res) => {
   try {
-    const { type, status, search } = req.query;
+    const { type, status, search, region } = req.query;
     let query = {};
 
     if (type && type !== 'All') {
@@ -18,6 +18,10 @@ router.get('/', protect, async (req, res) => {
 
     if (status && status !== 'All') {
       query.status = status;
+    }
+
+    if (region && region !== 'All') {
+      query.region = region;
     }
 
     if (search) {
@@ -35,7 +39,7 @@ router.get('/', protect, async (req, res) => {
 // @desc    Create a new vehicle
 // @access  Private (Fleet Manager)
 router.post('/', protect, authorize('Fleet Manager'), async (req, res) => {
-  const { regNo, name, type, maxCapacity, odometer, acquisitionCost, status } = req.body;
+  const { regNo, name, type, region, maxCapacity, odometer, acquisitionCost, status } = req.body;
 
   try {
     const formattedRegNo = regNo.toUpperCase().trim();
@@ -49,6 +53,7 @@ router.post('/', protect, authorize('Fleet Manager'), async (req, res) => {
       regNo: formattedRegNo,
       name,
       type,
+      region: region || 'Central',
       maxCapacity,
       odometer,
       acquisitionCost,
@@ -101,6 +106,7 @@ router.put('/:id', protect, authorize('Fleet Manager'), async (req, res) => {
 
     vehicle.name = req.body.name || vehicle.name;
     vehicle.type = req.body.type || vehicle.type;
+    vehicle.region = req.body.region || vehicle.region;
     vehicle.maxCapacity = req.body.maxCapacity !== undefined ? req.body.maxCapacity : vehicle.maxCapacity;
     vehicle.odometer = req.body.odometer !== undefined ? req.body.odometer : vehicle.odometer;
     vehicle.acquisitionCost = req.body.acquisitionCost !== undefined ? req.body.acquisitionCost : vehicle.acquisitionCost;

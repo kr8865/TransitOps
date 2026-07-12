@@ -29,16 +29,16 @@ app.get('/', (req, res) => {
   res.send('TransitOps API is running...');
 });
 
-
+// Database Seeding Function
 
 // Start Server
 const PORT = process.env.PORT || 5001;
 
 // Force reload for DB Atlas configurations 2
 connectDB().then(() => {
-  seedDatabase().then(() => {
+
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   });
-});
+
