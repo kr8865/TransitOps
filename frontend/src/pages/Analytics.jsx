@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 import { Fuel, BarChart2, TrendingUp, DollarSign, TrendingDown, Truck, AlertTriangle } from 'lucide-react';
 
 const Analytics = () => {
@@ -14,7 +15,7 @@ const Analytics = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/expenses/analytics', {
+      const res = await fetch(`${API_BASE_URL}/expenses/analytics`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();

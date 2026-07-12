@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Trash2, Edit3, X, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 
 const VehicleRegistry = ({ searchTerm }) => {
   const { user } = useAuth();
@@ -36,7 +37,7 @@ const VehicleRegistry = ({ searchTerm }) => {
   const fetchVehicles = async () => {
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/vehicles', {
+      const res = await fetch(`${API_BASE_URL}/vehicles`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -57,7 +58,7 @@ const VehicleRegistry = ({ searchTerm }) => {
     setError(null);
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/vehicles', {
+      const res = await fetch(`${API_BASE_URL}/vehicles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ const VehicleRegistry = ({ searchTerm }) => {
     setError(null);
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/vehicles/${editId}`, {
+      const res = await fetch(`${API_BASE_URL}/vehicles/${editId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +129,7 @@ const VehicleRegistry = ({ searchTerm }) => {
     if (!window.confirm('Are you sure you want to remove this vehicle?')) return;
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/vehicles/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/vehicles/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

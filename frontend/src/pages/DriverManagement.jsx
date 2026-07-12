@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Trash2, Edit3, X, AlertTriangle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 
 const DriverManagement = ({ searchTerm }) => {
   const { user } = useAuth();
@@ -33,7 +34,7 @@ const DriverManagement = ({ searchTerm }) => {
   const fetchDrivers = async () => {
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/drivers', {
+      const res = await fetch(`${API_BASE_URL}/drivers`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -53,7 +54,7 @@ const DriverManagement = ({ searchTerm }) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/drivers', {
+      const res = await fetch(`${API_BASE_URL}/drivers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ const DriverManagement = ({ searchTerm }) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/drivers/${editId}`, {
+      const res = await fetch(`${API_BASE_URL}/drivers/${editId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +122,7 @@ const DriverManagement = ({ searchTerm }) => {
     if (!window.confirm('Are you sure you want to remove this driver?')) return;
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/drivers/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/drivers/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -139,7 +140,7 @@ const DriverManagement = ({ searchTerm }) => {
   const toggleDriverStatus = async (driver, nextStatus) => {
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/drivers/${driver._id}`, {
+      const res = await fetch(`${API_BASE_URL}/drivers/${driver._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

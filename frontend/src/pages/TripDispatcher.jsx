@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 import { AlertCircle, CheckCircle, Navigation, Play, XCircle, Check, X, ShieldAlert } from 'lucide-react';
 
 const TripDispatcher = () => {
@@ -44,9 +45,9 @@ const TripDispatcher = () => {
 
       // Fetch vehicles, drivers, and trips
       const [vehRes, drvRes, tripRes] = await Promise.all([
-        fetch('http://localhost:5001/api/vehicles', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/drivers', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/trips', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_BASE_URL}/vehicles`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/drivers`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/trips`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       const vehData = await vehRes.json();
@@ -74,7 +75,7 @@ const TripDispatcher = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/trips', {
+      const res = await fetch(`${API_BASE_URL}/trips`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ const TripDispatcher = () => {
   const handleDispatchTrip = async (tripId) => {
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/trips/${tripId}/dispatch`, {
+      const res = await fetch(`${API_BASE_URL}/trips/${tripId}/dispatch`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -131,7 +132,7 @@ const TripDispatcher = () => {
     if (!window.confirm('Are you sure you want to cancel this trip?')) return;
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/trips/${tripId}/cancel`, {
+      const res = await fetch(`${API_BASE_URL}/trips/${tripId}/cancel`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -165,7 +166,7 @@ const TripDispatcher = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/trips/${completingTripId}/complete`, {
+      const res = await fetch(`${API_BASE_URL}/trips/${completingTripId}/complete`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

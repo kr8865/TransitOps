@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 import { Car, MapPin, Users, Activity, BarChart2, ShieldAlert } from 'lucide-react';
 
 const Dashboard = ({ searchTerm }) => {
@@ -23,13 +24,13 @@ const Dashboard = ({ searchTerm }) => {
       const token = localStorage.getItem('transitops_token');
       
       // Fetch analytics
-      const analyticRes = await fetch('http://localhost:5001/api/expenses/analytics', {
+      const analyticRes = await fetch(`${API_BASE_URL}/expenses/analytics`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const analytics = await analyticRes.json();
 
       // Fetch trips
-      const tripsRes = await fetch('http://localhost:5001/api/trips', {
+      const tripsRes = await fetch(`${API_BASE_URL}/trips`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const tripsList = await tripsRes.json();
