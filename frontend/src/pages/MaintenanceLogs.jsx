@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 import { AlertTriangle, ShieldAlert, Check, Calendar, Wrench, Trash2 } from 'lucide-react';
 
 const MaintenanceLogs = () => {
@@ -26,8 +27,8 @@ const MaintenanceLogs = () => {
       const token = localStorage.getItem('transitops_token');
       
       const [logsRes, vehRes] = await Promise.all([
-        fetch('http://localhost:5001/api/maintenance', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/vehicles', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_BASE_URL}/maintenance`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/vehicles`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       const logsData = await logsRes.json();
@@ -55,7 +56,7 @@ const MaintenanceLogs = () => {
     
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/maintenance', {
+      const res = await fetch(`${API_BASE_URL}/maintenance`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ const MaintenanceLogs = () => {
     if (!window.confirm('Are you sure you want to close this maintenance record?')) return;
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch(`http://localhost:5001/api/maintenance/${logId}/close`, {
+      const res = await fetch(`${API_BASE_URL}/maintenance/${logId}/close`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });

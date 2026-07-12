@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../api';
 import { Plus, X, Fuel, Wallet, AlertTriangle, ShieldAlert } from 'lucide-react';
 
 const FuelExpenses = () => {
@@ -37,10 +38,10 @@ const FuelExpenses = () => {
       const token = localStorage.getItem('transitops_token');
 
       const [analRes, vehRes, fuelRes, expRes] = await Promise.all([
-        fetch('http://localhost:5001/api/expenses/analytics', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/vehicles', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/expenses/fuel', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/expenses/other', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_BASE_URL}/expenses/analytics`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/vehicles`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/expenses/fuel`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_BASE_URL}/expenses/other`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       const analData = await analRes.json();
@@ -67,7 +68,7 @@ const FuelExpenses = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/expenses/fuel', {
+      const res = await fetch(`${API_BASE_URL}/expenses/fuel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ const FuelExpenses = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('transitops_token');
-      const res = await fetch('http://localhost:5001/api/expenses/other', {
+      const res = await fetch(`${API_BASE_URL}/expenses/other`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
