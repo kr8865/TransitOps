@@ -43,32 +43,16 @@ app.use((err, req, res, next) => {
 });
 
 // Database Seeding Function
-const seedDatabase = async () => {
-  try {
-    if (mongoose.connection.readyState !== 1) {
-      console.log('MongoDB not connected; skipping seed process.');
-      return;
-    }
 
-    console.log('MongoDB connected; seeding skipped in local/dev mode.');
-  } catch (error) {
-    console.error('Seeding failed:', error.message);
-  }
-};
 
 // Start Server
 const PORT = process.env.PORT || 5001;
 
-const startServer = async () => {
-  await connectDB();
-  await seedDatabase();
-
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Force reload for DB Atlas configurations 2
+connectDB().then(() => {
+  seedDatabase().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   });
-};
-
-startServer().catch((error) => {
-  console.error('Failed to start server:', error);
-  process.exit(1);
 });
