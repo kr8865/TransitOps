@@ -4,6 +4,10 @@ const User = require('../models/User');
 const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.json({ message: 'Auth routes available' });
+});
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'transitops_secret_key', {
     expiresIn: '30d',
