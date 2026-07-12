@@ -19,13 +19,16 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
-
+app.use('/api/vehicles', require('./routes/vehicles'));
+app.use('/api/drivers', require('./routes/drivers'));
+app.use('/api/trips', require('./routes/trips'));
+app.use('/api/maintenance', require('./routes/maintenance'));
+app.use('/api/expenses', require('./routes/expenses'));
 
 app.get('/', (req, res) => {
   res.send('TransitOps API is running...');
 });
 
-// Database Seeding Function
 
 
 // Start Server
