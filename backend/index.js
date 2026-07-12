@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const fs = require('fs');
+const path = require('path');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 
@@ -17,12 +19,31 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-// Application routes
-app.use('/api/trips', require('./routes/trips'));
-app.use('/api/expenses', require('./routes/expenses'));
+// Auto-register all route modules in the routes folder
+const routesDir = path.join(__dirname, 'routes');
+const routeFiles = fs.readdirSync(routesDir)
+  .filter(file => file.endsWith('.js'))
+  .sort();
 
+for (const file of routeFiles) {
+  const routeName = file.replace(/\.js$/, '');
+  const routePath = path.join(routesDir, file);
+  const routeModule = require(routePath);
+
+  if (routeName === 'auth') {
+    app.use('/api/auth', routeModule);
+  } else if (routeName === 'expenses') {
+    app.use('/api/expenses', routeModule);
+  } else if (routeName === 'vehicles') {
+    app.use('/api/vehicles', routeModule);
+  } else if (routeName === 'drivers') {
+    app.use('/api/drivers', routeModule);
+  } else if (routeName === 'maintenance') {
+    app.use('/api/maintenance', routeModule);
+  } else if (routeName === 'trips') {
+    app.use('/api/trips', routeModule);
+  }
+}
 
 app.get('/', (req, res) => {
   res.send('TransitOps API is running...');
